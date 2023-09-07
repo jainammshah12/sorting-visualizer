@@ -1,7 +1,7 @@
 import React from 'react';
 import './SortingVisualizer.css';
 
-class SortingVisualizer extends React{
+class SortingVisualizer extends React.Component {
     constructor(props){
         super(props);
 
