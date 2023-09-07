@@ -1,7 +1,7 @@
 import React from 'react';
 import './SortingVisualizer.css';
 
-export default class SortingVisualizer extends React{
+class SortingVisualizer extends React{
     constructor(props){
         super(props);
 
@@ -15,11 +15,11 @@ export default class SortingVisualizer extends React{
     }
 
     resetArray(){
-        const array = [];
+        const arr = [];
         for(let i = 0; i < 100; i++){
-            array.push(randomIntFromIntervals(5, 1000));
+            arr.push(randomIntFromIntervals(5, 1000));
         }
-        this.setState({array});
+        this.setState({arr});
     }
 
     render(){
@@ -39,3 +39,5 @@ export default class SortingVisualizer extends React{
 const randomIntFromIntervals = (min, max) =>{
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export default SortingVisualizer;
