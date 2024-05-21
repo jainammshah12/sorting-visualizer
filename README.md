@@ -1,11 +1,7 @@
 # Sorting Algorithms Visualizer 
+This is a personal project visualizing important sorting algorithms such as Quick Sort and Merge Sort to understand how these actually work and give a good idea of how fast they really are. 
+It is deployed here: https://jainammshah12.github.io/sorting-visualizer/
 
-Leveraged React.js and Redux on the front-end to create an interactive and responsive user interface allowing users to select and customize sorting algorithms, input data sizes, and animation speeds.
-Implemented a backend server using Node.js to handle data processing and algorithm execution, ensuring seamless communication between the front-end and back-end components.
-Supported multiple sorting algorithms with a comprehensive learning experience with Bubble Sort, Quick Sort, and Merge Sort.
+## Next Steps
+As a developer, I look towards adding more features and sorting algorithms in the near future.
 
-# Issues to Fix:
-
-Redux files to be formulated and imported
-Quick Sort implementation debugging
-Bubble Sort implementation
