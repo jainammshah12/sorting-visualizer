@@ -10,3 +10,29 @@
     display: inline-block;
     margin: 0 1px;
 }
+
+.buttons{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 15%;
+    margin-top: 10px;
+}
+
+.buttons > button{
+    margin: 0 10px;
+    padding: 5px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}
+.gen {
+    width: 150px;
+}
+.quick, .merge{
+    width: 90px;
+}
+
+.buttons > button:hover{
+    cursor: pointer;
+}

@@ -1,72 +1,117 @@
-function quickSort(stateArray, dispatch, speed) {
-    let array = stateArray.slice(0),
-        toDispatch = [];
-    quickSortHelper(array, 0, array.length - 1, toDispatch);
-    handleDispatch(toDispatch, dispatch, array, speed);
-    return array;
-  }
+// export function quickSortAnimations(array){
+//     const animations = [];
+//     if(array.length <= 1) return array;
+//     const auxiliaryArray = array.slice();
+//     quickSortHelper(array, 0, array.length-1,auxiliaryArray, animations);
+//     array = auxiliaryArray;
+//     return animations;
+// }
+
+// function quickSortHelper(
+//   mainArray,
+//   startId,
+//   endId,
+//   auxiliaryArray,
+//   animations
+// ){
   
-  function quickSortHelper(array, start, end, toDispatch) {
-    if (start >= end) {
-      toDispatch.push([true, start]);
-      return;
-    }
-    let pivot = start,
-        left = start + 1,
-        right = end;
-    toDispatch.push(pivot);
-    toDispatch.push([left, right]);
-    while (right >= left) {
-      if (array[right] < array[pivot] && array[left] > array[pivot]) {
-        toDispatch.push([left, right, true]);
-        let temp = array[right];
-        array[right] = array[left];
-        array[left] = temp;
-        toDispatch.push(array.slice(0));
-        toDispatch.push([]);
-      }
-      if (array[right] >= array[pivot]) {
-        right--;
-      }
-      if (array[left] <= array[pivot]) {
-        left++;
-      }
-      if (right >= left) toDispatch.push([left, right]);
-    }
-    toDispatch.push([pivot, right]);
-    if (pivot !== right) {
-      let temp = array[right];
-      array[right] = array[pivot];
-      array[pivot] = temp;
-      toDispatch.push([pivot, right, true]);
-      toDispatch.push(array.slice(0));
-      toDispatch.push([]);
-      toDispatch.push([true, right]);
-    }
-    quickSortHelper(array, start, right - 1, toDispatch);
-    quickSortHelper(array, right + 1, end, toDispatch);
-  }
-  
-//   function handleDispatch(toDispatch, dispatch, array, speed) {
-//     if (!toDispatch.length) {
-//       dispatch(setPivot(null));
-//       dispatch(setCurrentQuickTwo(array.map((num, index) => index)));
-//       setTimeout(() => {
-//         dispatch(setCurrentQuickTwo([]));
-//         dispatch(setRunning(false));
-//       }, 900);
-//       return;
+//   if(startId >= endId || endId === mainArray.length || startId-1 === mainArray.length) return;
+//   const pivotId = partition(mainArray, startId, endId, auxiliaryArray, animations);
+//   quickSortHelper(mainArray, startId, pivotId-1, auxiliaryArray, animations);
+//   quickSortHelper(mainArray, pivotId+1, endId, auxiliaryArray, animations);
+// }
+
+// function partition(
+//   mainArray,
+//   startId,
+//   endId,
+//   auxiliaryArray,
+//   animations
+// ){
+//   let pivot = startId,
+//       left = startId + 1,
+//       right = endId+1;
+//   animations.push([left, right]);
+//   while (right > left) {
+//     if (auxiliaryArray[right] < auxiliaryArray[pivot] && auxiliaryArray[left] > auxiliaryArray[pivot]) {
+//       animations.push([left, right]);
+//       animations.push([left, right]);
 //     }
-//     let dispatchFunction = !(toDispatch[0] instanceof Array) ?
-//       setPivot : toDispatch[0].length > 3 ?
-//         setArray : toDispatch[0].length !== 2 ?
-//           setCurrentSwappers : toDispatch[0].length === 2 && typeof toDispatch[0][0] === "boolean" ?
-//             setCurrentSorted : setCurrentQuickTwo;
-//     dispatch(dispatchFunction(toDispatch.shift()));
-//     if (dispatchFunction === setPivot) dispatch(setCurrentQuickTwo(toDispatch.shift()));
-//     setTimeout(() => {
-//       handleDispatch(toDispatch, dispatch, array, speed);
-//     }, speed);
+//     while (auxiliaryArray[right] >= auxiliaryArray[pivot]) {
+//       right--;
+//     }
+//     while (auxiliaryArray[left] <= auxiliaryArray[pivot]) {
+//       left++;
+//     }
+//     if (right > left){ 
+//       animations.push([left, auxiliaryArray[right]]);
+//       swap(mainArray, left, right);
+//     }
 //   }
+//   if (pivot !== right) {
+//     animations.push([pivot, right]);
+//     animations.push([pivot, right]);
+//     animations.push([pivot, mainArray[right]]);
+//     swap(mainArray, pivot, right);
+//   }
+//   return right;
+// }
+
+// function swap(array, i, j) {
+//   const temp = array[i];
+//   array[i] = array[j];
+//   array[j] = temp;
+// }
+
+export function getQuickSortAnimations(array) {
+  const animations = [];
+  if (array.length <= 1) return animations;
+  quickSortHelper(array, 0, array.length - 1, animations);
+  return animations;
+}
+
+function quickSortHelper(array, low, high, animations) {
+  if (low < high) {
+      const pivotIndex = partition(array, low, high, animations);
+      quickSortHelper(array, low, pivotIndex - 1, animations);
+      quickSortHelper(array, pivotIndex + 1, high, animations);
+  }
+}
+
+function partition(array, low, high, animations) {
+  let pivot = low;
+  animations.push(["comparison1", pivot, high]);
+  animations.push(["swap", pivot, array[high]]);
+  animations.push(["swap", high, array[pivot]]);
+  animations.push(["comparison2", pivot, high]);
+  swap(array, pivot, high);
+
+  let lti = low;
+
+  for (let i = low; i < high; ++i) {
+    animations.push(["comparison1", i, high]);
+    animations.push(["comparison2", i, high]);
+    if (array[i] <= array[high]) {
+      animations.push(["comparison1", i, lti]);
+      animations.push(["swap", i, array[lti]]);
+      animations.push(["swap", lti, array[i]]);
+      animations.push(["comparison2", i, lti]);
+      swap(array, i, lti);
+      lti++;
+    }
+  }
+  animations.push(["comparison1", lti, high]);
+  animations.push(["swap", high, array[lti]]);
+  animations.push(["swap", lti, array[high]]);
+  animations.push(["comparison2", lti, high]);
+
+  swap(array, lti, high);
+  return lti;
   
-  export default quickSort;
+}
+
+function swap(array, i, j) {
+  const temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
+}
